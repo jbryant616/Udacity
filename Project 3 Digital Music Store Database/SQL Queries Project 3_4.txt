@@ -1,0 +1,102 @@
+/*Query 1*/ (Working)
+select distinct(a.ArtistId) , b.Name, count(c.trackID) AS Songs
+FROm album a
+left join Artist b
+on a.ArtistId = b.ArtistId
+left join Track c
+on a.AlbumID = C.AlbumId
+left join Genre e
+on e.GenreID = C.GenreId
+WHERE E.nAME = 'Rock'
+Group by 1,2
+order by Songs DESC
+LIMIT 10
+
+
+/*Query 2*/ Set 3 question 2 (working)
+Select t.Name, t.Milliseconds
+From Track T
+WHERE t.Milliseconds > (select avg(milliseconds) from track)
+order by t.Milliseconds DESC
+
+
+/*Query 3.1*/ 25 results set3 q1 (Working)
+WITH 
+cte 
+AS (
+SELECT
+COUNT(IVID.InvoiceId) Purchases, CUST.Country, GEN.Name, GEN.GenreId
+FROM Invoice IVID
+JOIN InvoiceLine INVL 
+ON IVID.InvoiceId = INVL.Invoiceid
+JOIN Customer CUST
+ON CUST.CustomerId = IVID.CustomerId
+JOIN Genre GEN 
+ON GEN.GenreId = TRK.GenreId
+JOIN Track TRK 
+ON INVL.Trackid = TRK.TrackId
+GROUP BY CUST.Country, GEN.Name
+ORDER BY CUST.Country, Purchases DESC
+)
+SELECT cte.*
+FROM cte
+JOIN (
+SELECT MAX(Purchases) AS MaxPurchases, Country, Name, GenreId
+FROM cte
+GROUP BY Country
+)cte_2
+ON cte.Country = cte_2.Country
+WHERE cte.Purchases = cte_2.MaxPurchases;
+
+
+/*Query 4*/ SET 2 Q 3 (Working)
+CREATE VIEW ABview AS
+SELECT DISTINCT a.Name, g.CustomerId, SUM(d.UnitPrice) AS AmountSpent
+FROM Artist a
+LEFT JOIN Album b ON a.ArtistId = b.ArtistId
+LEFT JOIN Track c ON b.AlbumId = c.AlbumId
+LEFT JOIN InvoiceLine d ON c.TrackId = d.TrackId
+LEFT JOIN Invoice g ON g.InvoiceId = d.InvoiceId
+GROUP BY 1, 2
+ORDER BY AmountSpent DESC;
+SELECT e.Name, e.AmountSpent, f.CustomerId, f.FirstName, f.LastName
+FROM ABview e
+LEFT JOIN Customer f
+on e.CustomerId = f.CustomerId
+WHERE e.Name = 'Iron Maiden'
+ORDER by AmountSpent DESC
+Limit 6
+
+
+
+/*Query 5.1*/ Set 3 query 3 (Working)
+WITH cte AS
+(
+SELECT CUST.Country, SUM(IVID.Total) TotalSpent, CUST.FirstName, CUST.LastName, CUST.CustomerId
+FROM
+Customer CUST
+JOIN Invoice IVID
+ON IVID.CustomerId = CUST.CustomerId
+GROUP BY CUST.CustomerId
+)
+
+SELECT cte.Country, cte.TotalSpent, cte.FirstName, cte.LastName, cte.CustomerId
+FROM cte
+JOIN(
+SELECT Country, MAX(TotalSpent) AS MaxTotalSpent, FirstName, LastName, CustomerId
+FROM cte
+GROUP BY Country  ---,  FirstName, LastName, CustomerId
+)cte_2
+ON cte.Country = cte_2.Country
+WHERE cte.TotalSpent = cte_2.MaxTotalSpent
+ORDER BY cte.Country;
+
+
+
+
+
+
+
+
+
+
