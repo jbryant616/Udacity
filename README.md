@@ -5,7 +5,7 @@
 * Examined findings and descriptions to find conclusions using the data. 
 
 ### Project Two: Analyze NYSE Data
-* Used Excel Modeling and Descriptive Statistics to make forecasts using NYSE data
+* Used Excel Modeling and Descriptive Statistics to make forecasts using NYSE data.
 
 ### Project Three: Query Digital Music Store Database
 * Examined a music store database w/SQL to make reports from the data for better understanding of the customers. Includes SQL queries.
